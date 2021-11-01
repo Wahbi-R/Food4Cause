@@ -45,12 +45,15 @@ class _MyHomePageState extends State<MyHomePage> {
         //Icon and buttons on main page
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          //Icon at the top
           const Icon(Icons.local_restaurant, size: 60),
           const SizedBox(height: 20),
+
           Text("Food4Cause",
               style: TextStyle(
                   fontWeight: FontWeight.bold, color: Colors.grey[700])),
           const SizedBox(height: 20),
+          //The buttons with gaps in between
           elevButtons("Donate", Colors.red[400], Donate, context),
           const SizedBox(height: 30),
           elevButtons(
@@ -72,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+//Function to open a new screen
 void openPage(page, context) {
   if (page == null) {
     return;
@@ -79,9 +83,12 @@ void openPage(page, context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => page()));
 }
 
+//Button widget (Creates button and calls openPage when clicked, container is for
+//               the drop shadow)
 Widget elevButtons(String text, color, pageName, context) => Container(
     width: 300,
     height: 40,
+    //adds dropshadow
     decoration:
         BoxDecoration(borderRadius: BorderRadius.circular(5), boxShadow: const [
       BoxShadow(
@@ -90,6 +97,7 @@ Widget elevButtons(String text, color, pageName, context) => Container(
           spreadRadius: 1,
           blurRadius: 2)
     ]),
+    //Actual button
     child: ElevatedButton(
         onPressed: () {
           openPage(pageName, context);
