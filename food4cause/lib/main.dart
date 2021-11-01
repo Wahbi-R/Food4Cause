@@ -76,7 +76,7 @@ void openPage(page, context) {
   if (page == null) {
     return;
   }
-  Navigator.push(context, MaterialPageRoute(builder: (context) => AboutUs()));
+  Navigator.push(context, MaterialPageRoute(builder: (context) => page()));
 }
 
 Widget elevButtons(String text, color, pageName, context) => Container(
