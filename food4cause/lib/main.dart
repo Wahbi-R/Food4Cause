@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'about.dart';
+import 'foodPartner.dart';
+import 'charityPartner.dart';
+import 'communityPartner.dart';
+import 'donate.dart';
+import 'volunteer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -46,15 +51,18 @@ class _MyHomePageState extends State<MyHomePage> {
               style: TextStyle(
                   fontWeight: FontWeight.bold, color: Colors.grey[700])),
           const SizedBox(height: 20),
-          elevButtons("Donate", Colors.red[400], null, context),
+          elevButtons("Donate", Colors.red[400], Donate, context),
           const SizedBox(height: 30),
-          elevButtons("Food Partner", Colors.orangeAccent[700], null, context),
+          elevButtons(
+              "Food Partner", Colors.orangeAccent[700], FoodPartner, context),
           const SizedBox(height: 30),
-          elevButtons("Community Partner", Colors.yellow[500], null, context),
+          elevButtons("Community Partner", Colors.yellow[500], CommunityPartner,
+              context),
           const SizedBox(height: 30),
-          elevButtons("Volunteer", Colors.green[300], null, context),
+          elevButtons("Volunteer", Colors.green[300], Volunteer, context),
           const SizedBox(height: 30),
-          elevButtons("Charity Partner", Colors.blue[300], null, context),
+          elevButtons(
+              "Charity Partner", Colors.blue[300], CharityPartner, context),
           const SizedBox(height: 30),
           elevButtons("About Us", Colors.blue[900], AboutUs, context),
           const SizedBox(height: 30),
