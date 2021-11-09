@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AboutUs extends StatelessWidget {
-  const AboutUs({Key? key}) : super(key: key);
+  final int index;
+  const AboutUs({Key? key, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

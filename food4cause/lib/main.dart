@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food4cause/widgets/elevButton.dart';
+import 'package:food4cause/widgets/options.dart';
 import 'about.dart';
 import 'foodPartner.dart';
 import 'charityPartner.dart';
@@ -42,10 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         body: Center(
       child: Column(
-        //Icon and buttons on main page
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          //Icon at the top
+          //The buttons with gaps in between
           const Icon(Icons.local_restaurant, size: 60),
           const SizedBox(height: 20),
 
@@ -53,54 +54,22 @@ class _MyHomePageState extends State<MyHomePage> {
               style: TextStyle(
                   fontWeight: FontWeight.bold, color: Colors.grey[700])),
           const SizedBox(height: 20),
-          //The buttons with gaps in between
-          elevButtons("Donate", Colors.red[400], Donate, context),
-          const SizedBox(height: 30),
-          elevButtons(
-              "Food Partner", Colors.orangeAccent[700], FoodPartner, context),
-          const SizedBox(height: 30),
-          elevButtons("Community Partner", Colors.yellow[500], CommunityPartner,
-              context),
-          const SizedBox(height: 30),
-          elevButtons("Volunteer", Colors.green[300], Volunteer, context),
-          const SizedBox(height: 30),
-          elevButtons(
-              "Charity Partner", Colors.blue[300], CharityPartner, context),
-          const SizedBox(height: 30),
-          elevButtons("About Us", Colors.blue[900], AboutUs, context),
-          const SizedBox(height: 30),
+          Container(
+            height: 500,
+            width: 280,
+            child: ListView.builder(
+                itemCount: option.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return elevButton(
+                      text: option[index]['name'],
+                      color: option[index]['color'],
+                      pageName: option[index]['page'],
+                      context: context,
+                      index: index);
+                }),
+          )
         ],
       ),
     ));
   }
 }
-
-//Function to open a new screen
-void openPage(page, context) {
-  if (page == null) {
-    return;
-  }
-  Navigator.push(context, MaterialPageRoute(builder: (context) => page()));
-}
-
-//Button widget (Creates button and calls openPage when clicked, container is for
-//               the drop shadow)
-Widget elevButtons(String text, color, pageName, context) => Container(
-    width: 300,
-    height: 40,
-    //adds dropshadow
-    decoration:
-        BoxDecoration(borderRadius: BorderRadius.circular(5), boxShadow: const [
-      BoxShadow(
-          color: Colors.grey,
-          offset: Offset(-3, 3),
-          spreadRadius: 1,
-          blurRadius: 2)
-    ]),
-    //Actual button
-    child: ElevatedButton(
-        onPressed: () {
-          openPage(pageName, context);
-        },
-        child: Text(text),
-        style: ElevatedButton.styleFrom(primary: color, elevation: 0)));

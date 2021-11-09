@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 
 class CharityPartner extends StatelessWidget {
-  const CharityPartner({Key? key}) : super(key: key);
+  final int index;
+  const CharityPartner({Key? key, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
