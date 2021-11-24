@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food4cause/provider/donationModel.dart';
 import 'package:food4cause/widgets/elevButton.dart';
 import 'package:food4cause/widgets/options.dart';
 import 'about.dart';
@@ -8,9 +9,16 @@ import 'charityPartner.dart';
 import 'communityPartner.dart';
 import 'donate.dart';
 import 'volunteer.dart';
+import 'package:provider/provider.dart';
 
+//Log out button where settings is
+//FoodPartner needs donations
+//Community Partner instead of donation page put request
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (BuildContext context) => DonationModel(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

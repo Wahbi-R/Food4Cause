@@ -1,101 +1,209 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:food4cause/provider/donationModel.dart';
+import 'package:food4cause/widgets/creditCard.dart';
+import 'package:provider/provider.dart';
 
-class Donate extends StatelessWidget {
+class Donate extends StatefulWidget {
   final int index;
-  const Donate({Key? key, required this.index}) : super(key: key);
+  Donate({Key? key, required this.index}) : super(key: key);
 
+  int total = 0;
+  @override
+  _DonateState createState() => _DonateState();
+}
+
+class _DonateState extends State<Donate> {
+  final DonationModel donations = DonationModel();
+  final otherController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-      ),
-      drawer: Drawer(
-        elevation: 0,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            Container(
-              padding: EdgeInsets.fromLTRB(0, 20, 260, 0),
-              child: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.cancel,
-                    color: Colors.grey[700],
-                  )),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-              child: Container(
-                height: 170,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "John Doe",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 1.5,
-                          fontSize: 15),
-                    ),
-                    Text(
-                      "johndoe@company.com",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey[700],
-                          letterSpacing: 1.5),
-                    )
-                  ],
+        body: SingleChildScrollView(
+      child: Center(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(15, 60, 0, 20),
+                child: Text(
+                  "Donate",
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 1),
                 ),
               ),
-            ),
-            ListTile(
-              horizontalTitleGap: 0,
-              leading: Icon(
-                Icons.home,
-                color: Colors.grey[400],
+              clickableDon(),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+                child: Container(
+                  height: 50,
+                  width: 325,
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 45,
+                        width: 80,
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 1,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                            color: Colors.redAccent,
+                            borderRadius: BorderRadius.all(Radius.circular(6))),
+                        child: Center(
+                          child: Text(
+                            'Other:',
+                            style: TextStyle(color: Colors.white, fontSize: 15),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        child: Container(
+                          padding: EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 1,
+                                  offset: Offset(
+                                      0, 3), // changes position of shadow
+                                ),
+                              ],
+                              color: Colors.red[300],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(6))),
+                          width: 235,
+                          height: 45,
+                          child: TextField(
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                            controller: otherController,
+                            onSubmitted: (_) {
+                              donations.addToDonations(
+                                  int.parse(otherController.text));
+                            },
+                            decoration: InputDecoration(
+                              hintStyle:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                              hintText: "\$",
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              title: Text('Home'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-              trailing: Icon(Icons.keyboard_arrow_right),
+              CreditCard(),
+            ],
+          ),
+        ),
+      ),
+    ));
+  }
+
+  Container clickableDon() {
+    return Container(
+      padding: EdgeInsets.only(left: 10),
+      width: 390,
+      child: Row(
+        children: [
+          topDon(
+            amount: 25,
+            donations: donations,
+          ),
+          topDon(
+            amount: 50,
+            donations: donations,
+          ),
+          topDon(
+            amount: 75,
+            donations: donations,
+          ),
+          topDon(
+            amount: 100,
+            donations: donations,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class topDon extends StatefulWidget {
+  final int amount;
+  final DonationModel donations;
+  topDon({
+    Key? key,
+    required this.amount,
+    required this.donations,
+  }) : super(key: key);
+
+  @override
+  _topDonState createState() => _topDonState();
+}
+
+class _topDonState extends State<topDon> {
+  bool tapped = false;
+
+  void changeTap() {
+    setState(() {
+      tapped = !tapped;
+      if (tapped == false) {
+        if (widget.donations.getDonations >= 0) {
+          Provider.of<DonationModel>(context, listen: false)
+              .removeDonation(widget.amount);
+        }
+      } else {
+        Provider.of<DonationModel>(context, listen: false)
+            .addToDonations(widget.amount);
+      }
+    });
+    print("Total:" + widget.donations.getDonations.toString());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: changeTap,
+      child: Padding(
+        padding: EdgeInsets.only(right: 2),
+        child: Container(
+          height: 45,
+          width: 80,
+          decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+              color: tapped ? Colors.black : Colors.redAccent,
+              borderRadius: BorderRadius.all(Radius.circular(6))),
+          child: Center(
+            child: Text(
+              '\$${widget.amount}',
+              style: TextStyle(color: Colors.white, fontSize: 15),
             ),
-            ListTile(
-              horizontalTitleGap: 0,
-              leading: Icon(Icons.card_giftcard, color: Colors.grey[400]),
-              title: Text('Donations'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-              trailing: Icon(Icons.keyboard_arrow_right),
-            ),
-            ListTile(
-              horizontalTitleGap: 0,
-              leading:
-                  Icon(Icons.person_pin_circle_sharp, color: Colors.grey[400]),
-              title: Text(
-                'Transport',
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-              trailing: Icon(Icons.keyboard_arrow_right),
-            ),
-            ListTile(
-              horizontalTitleGap: 0,
-              leading: Icon(Icons.favorite, color: Colors.grey[400]),
-              title: Text('Communities'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-              trailing: Icon(Icons.keyboard_arrow_right),
-            ),
-          ],
+          ),
         ),
       ),
     );
