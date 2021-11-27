@@ -152,9 +152,6 @@ class _SignUpState extends State<SignUp> {
                           Provider.of<UserModel>(context, listen: false)
                               .addToUser(
                                   User(emailCon.text, passCon.text, true));
-                          print(Provider.of<UserModel>(context, listen: false)
-                              .getUser
-                              .emailAddress);
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

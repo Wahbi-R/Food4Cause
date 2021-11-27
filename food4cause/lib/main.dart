@@ -54,7 +54,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
+        body: Container(
+      height: 700,
+      width: 700,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -68,8 +70,16 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(height: 20),
           Container(
             height: 500,
-            width: 280,
-            child: ListView.builder(
+            width: 360,
+            child: GridView.builder(
+                primary: true,
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  mainAxisSpacing: 0,
+                  maxCrossAxisExtent: 200,
+                  childAspectRatio: 1,
+                  crossAxisSpacing: 20,
+                ),
                 itemCount: option.length,
                 itemBuilder: (BuildContext context, int index) {
                   return elevButton(
