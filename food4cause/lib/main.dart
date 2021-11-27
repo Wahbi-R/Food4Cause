@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food4cause/provider/donationModel.dart';
+import 'package:food4cause/provider/user_model.dart';
 import 'package:food4cause/widgets/elevButton.dart';
 import 'package:food4cause/widgets/options.dart';
 import 'about.dart';
@@ -15,8 +16,11 @@ import 'package:provider/provider.dart';
 //FoodPartner needs donations
 //Community Partner instead of donation page put request
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (BuildContext context) => DonationModel(),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<DonationModel>(create: (_) => DonationModel()),
+      ChangeNotifierProvider<UserModel>(create: (_) => UserModel())
+    ],
     child: MyApp(),
   ));
 }

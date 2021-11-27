@@ -1,16 +1,41 @@
+// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:food4cause/provider/donationModel.dart';
+import 'package:food4cause/widgets/barChartSample.dart';
 import 'package:provider/provider.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
-class CreditCard extends StatelessWidget {
+class CreditCard extends StatefulWidget {
   CreditCard({Key? key}) : super(key: key);
 
+  @override
+  State<CreditCard> createState() => _CreditCardState();
+}
+
+class _CreditCardState extends State<CreditCard> {
   @override
   Widget build(BuildContext context) {
     final nameController = TextEditingController();
     final cardNumCon = TextEditingController();
     final expiryCon = TextEditingController();
     final secCon = TextEditingController();
+    final zipCon = TextEditingController();
+
+    bool hasNumName = false;
+    bool cardNumAllNum = true;
+    void checkIfNumber(TextEditingController nameController) {
+      if (!nameController.text.contains(RegExp(r'[a-zA-Z]+'))) {
+        print("hasNUMBERS");
+        setState(() {
+          hasNumName = true;
+        });
+      }
+    }
+
+    void dispose() {
+      nameController.dispose();
+      super.dispose();
+    }
 
     return Container(
       child: Column(
@@ -36,8 +61,12 @@ class CreditCard extends StatelessWidget {
                   fontSize: 16,
                 ),
                 controller: nameController,
-                onSubmitted: (_) {},
+                onSubmitted: (val) {
+                  checkIfNumber(nameController);
+                },
                 decoration: InputDecoration(
+                  enabled: false,
+                  errorText: hasNumName ? "Only text" : null,
                   hintText: "John Wave",
                   border: InputBorder.none,
                 ),
@@ -64,11 +93,11 @@ class CreditCard extends StatelessWidget {
                 controller: cardNumCon,
                 onSubmitted: (_) {},
                 decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.teal[50],
-                  hintText: "4242 |",
-                  border: InputBorder.none,
-                ),
+                    filled: true,
+                    fillColor: Colors.teal[50],
+                    hintText: "4242 |",
+                    border: InputBorder.none,
+                    errorText: cardNumAllNum ? null : "Only Numberrs"),
               ),
             ),
           ),
@@ -106,7 +135,7 @@ class CreditCard extends StatelessWidget {
                       color: Colors.grey,
                       fontSize: 16,
                     ),
-                    controller: nameController,
+                    controller: zipCon,
                     onSubmitted: (_) {},
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -115,6 +144,15 @@ class CreditCard extends StatelessWidget {
                 ),
               ),
               TotalDonWidget(),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Container(
+                    height: 200, width: 350, child: const BarChartSample1()),
+              ),
+              // Container(
+              //     height: 200,
+              //     width: 400,
+              //     child: BarChartWidget(Types.generateData())),
             ],
           ),
         ],
@@ -157,7 +195,7 @@ class CreditCard extends StatelessWidget {
             padding: EdgeInsets.only(left: 10),
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.all(Radius.circular(6))),
+                borderRadius: const BorderRadius.all(Radius.circular(6))),
             width: 150,
             height: 45,
             child: TextField(
@@ -191,7 +229,7 @@ class TotalDonWidget extends StatelessWidget {
                 color: Colors.teal[200],
                 borderRadius: BorderRadius.all(Radius.circular(6))),
             height: 40,
-            width: 300,
+            width: 301,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -15,4 +15,9 @@ class DonationModel extends ChangeNotifier {
     donations -= amount;
     notifyListeners();
   }
+
+  void setDonation() {
+    donations = 0;
+    notifyListeners();
+  }
 }

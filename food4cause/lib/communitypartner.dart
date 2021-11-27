@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:food4cause/widgets/drawerWidget.dart';
 
 class CommunityPartner extends StatelessWidget {
   final int index;
@@ -9,6 +10,9 @@ class CommunityPartner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    throw UnimplementedError();
+    return Scaffold(
+      appBar: AppBar(),
+      drawer: drawerWidget(),
+    );
   }
 }

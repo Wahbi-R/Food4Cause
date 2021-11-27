@@ -1,8 +1,8 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food4cause/provider/donationModel.dart';
-import 'package:food4cause/widgets/creditCard.dart';
+import 'package:food4cause/widgets/credit_card.dart';
 import 'package:provider/provider.dart';
 
 class Donate extends StatefulWidget {
@@ -17,6 +17,10 @@ class Donate extends StatefulWidget {
 class _DonateState extends State<Donate> {
   final DonationModel donations = DonationModel();
   final otherController = TextEditingController();
+  var val1 = "";
+
+  var _focusNode;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,9 +97,17 @@ class _DonateState extends State<Donate> {
                               fontSize: 16,
                             ),
                             controller: otherController,
-                            onSubmitted: (_) {
-                              donations.addToDonations(
-                                  int.parse(otherController.text));
+                            onSubmitted: (val) {
+                              if (otherController.text.isNotEmpty) {
+                                Provider.of<DonationModel>(context,
+                                        listen: false)
+                                    .addToDonations(
+                                        int.parse(otherController.text));
+                              } else {
+                                Provider.of<DonationModel>(context,
+                                        listen: false)
+                                    .setDonation();
+                              }
                             },
                             decoration: InputDecoration(
                               hintStyle:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food4cause/widgets/options.dart';
+import 'package:food4cause/widgets/signUp.dart';
 
 class SignIn extends StatefulWidget {
   final int index;
@@ -11,6 +12,9 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   bool tapped = false;
+  //Controllers
+  TextEditingController emailCon = TextEditingController();
+  TextEditingController passCon = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -125,7 +129,7 @@ class _SignInState extends State<SignIn> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 5),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
                   child: Text("Forget Passoword ?",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -133,12 +137,21 @@ class _SignInState extends State<SignIn> {
                           fontSize: 12)),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 5),
-                  child: Text("Sign Up",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: option[widget.index]['color'],
-                          fontSize: 12)),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
+                  child: FlatButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SignUp(index: widget.index)));
+                    },
+                    child: Text("Sign Up",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: option[widget.index]['color'],
+                            fontSize: 12)),
+                  ),
                 ),
               ],
             ),
