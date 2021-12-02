@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:food4cause/foodPartner.dart';
 import 'package:food4cause/models/users.dart';
@@ -22,6 +23,13 @@ class _SignUpState extends State<SignUp> {
 
   //Provider
   final UserModel donations = UserModel();
+  bool isEmail(String em) {
+    return RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+        .hasMatch(em);
+  }
+
+  bool isValid = true;
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -51,11 +59,17 @@ class _SignUpState extends State<SignUp> {
               width: 284,
               child: TextFormField(
                 controller: emailCon,
+                onEditingComplete: () {
+                  setState(() {
+                    isValid = EmailValidator.validate(emailCon.text);
+                  });
+                },
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
                 ),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
+                  errorText: isValid ? null : "Enter Valid Email Address",
                   hintText: 'Your email address',
                 ),
               ),
@@ -189,7 +203,7 @@ class _SignUpState extends State<SignUp> {
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
                   child: FlatButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>

@@ -10,9 +10,6 @@ class CommunityPartner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(),
-      drawer: drawerWidget(),
-    );
+    return Container();
   }
 }

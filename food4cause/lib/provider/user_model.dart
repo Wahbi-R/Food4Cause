@@ -8,46 +8,63 @@ import 'package:food4cause/widgets/signIn.dart';
 class UserModel extends ChangeNotifier {
   User user = User("", "", false);
   List<User> listOfUsers = [User("brand@gmail.com", "pass", false)];
-  List<Item> items = [];
+  List<String> emails = ["brand@gmail.com"];
   List<Account> accounts = [
     Account(User("brand@gmail.com", "pass", false),
-        [Item("Chicken", 2.0, "", "", "")])
+        [Item("Chicken", 2.0, "lbs", "", "", "")])
   ];
-
-  /*
-  List<Accounts> accounts;
-  List<Items> items;
-  1. Sign Up 
-  2. Community Partner
-  3. Add there dontations
-    - .addToItems(Item item1){
-      both email match then add item to list 
-      accounts
-
-      Getting index of that account
-      index = listOfUsers.indexOf(newUser);
-      if(accounts.user.email==(current)userm.email){
-          accounts[index].items.add(item1);
-      }
-      else{
-
-      }
-      items.add(item1)
-    }
-  4.If they sign out set items =[] in provider to 
-  
-  
-  */
+  String username = "";
 
   User get getUser => user;
   List<Account> get getAccounts => accounts;
   List<Item> get getItems => items;
+  String get getUserName => username;
+
+  void signOut() {
+    int index = getIndex;
+    user.signIn = false;
+    accounts[index].user.signIn = false;
+    notifyListeners();
+  }
+
+  void addUserName(String userName) {
+    username = userName;
+    notifyListeners();
+  }
 
   void addToUser(User newUser) {
     user = newUser;
-    listOfUsers.add(newUser);
+    emails.add(newUser.emailAddress);
     accounts.add(Account(newUser, []));
-    print(accounts[1].user.emailAddress);
+    // print(accounts[1].user.emailAddress);
     notifyListeners();
+  }
+
+  void signIn(User oldUser) {
+    user = oldUser;
+    print(user.emailAddress);
+    notifyListeners();
+  }
+
+  void addToItems(Item item) {
+    int index = emails.indexOf(user.emailAddress);
+    print("ACCOUNT:${accounts[index].user.emailAddress}");
+    print("Current:${user.emailAddress}");
+    if (accounts[index].user.emailAddress == user.emailAddress) {
+      accounts[index].items.add(item);
+    } else {
+      print("SOMETHING WRONG");
+    }
+    notifyListeners();
+  }
+
+  void printItems() {
+    int index = listOfUsers.indexOf(user);
+    print(accounts[index].items);
+  }
+
+  int get getIndex {
+    print("Current User: ${user.emailAddress}");
+    return emails.indexOf(user.emailAddress);
   }
 }

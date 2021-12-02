@@ -1,9 +1,9 @@
-// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:food4cause/provider/donationModel.dart';
 import 'package:food4cause/widgets/barChartSample.dart';
 import 'package:provider/provider.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:intl/intl.dart';
 
 class CreditCard extends StatefulWidget {
   CreditCard({Key? key}) : super(key: key);
@@ -14,26 +14,33 @@ class CreditCard extends StatefulWidget {
 
 class _CreditCardState extends State<CreditCard> {
   @override
-  Widget build(BuildContext context) {
-    final nameController = TextEditingController();
-    final cardNumCon = TextEditingController();
-    final expiryCon = TextEditingController();
-    final secCon = TextEditingController();
-    final zipCon = TextEditingController();
+  final nameController = TextEditingController();
+  final cardNumCon = TextEditingController();
+  final expiryCon = TextEditingController();
+  final secCon = TextEditingController();
+  final zipCon = TextEditingController();
+  DateTime? dataTime;
+  String newData = "";
 
-    bool hasNumName = false;
-    bool cardNumAllNum = true;
+  bool hasNumName = false;
+  bool cardNumAllNum = true;
+  Widget build(BuildContext context) {
     void checkIfNumber(TextEditingController nameController) {
       if (!nameController.text.contains(RegExp(r'[a-zA-Z]+'))) {
         print("hasNUMBERS");
         setState(() {
           hasNumName = true;
         });
+      } else {
+        setState(() {
+          hasNumName = false;
+        });
       }
     }
 
     void dispose() {
       nameController.dispose();
+      cardNumCon.dispose();
       super.dispose();
     }
 
@@ -65,8 +72,12 @@ class _CreditCardState extends State<CreditCard> {
                   checkIfNumber(nameController);
                 },
                 decoration: InputDecoration(
-                  enabled: false,
-                  errorText: hasNumName ? "Only text" : null,
+                  errorStyle: TextStyle(
+                    fontSize: 10,
+                  ),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                  errorText: hasNumName ? "Letters only " : null,
                   hintText: "John Wave",
                   border: InputBorder.none,
                 ),
@@ -91,8 +102,24 @@ class _CreditCardState extends State<CreditCard> {
                   fontSize: 16,
                 ),
                 controller: cardNumCon,
-                onSubmitted: (_) {},
+                onSubmitted: (_) {
+                  if (cardNumCon.text.contains(RegExp(r'[a-zA-Z]+'))) {
+                    print("hasLetters");
+                    setState(() {
+                      cardNumAllNum = false;
+                    });
+                  } else {
+                    setState(() {
+                      cardNumAllNum = true;
+                    });
+                  }
+                },
                 decoration: InputDecoration(
+                    errorStyle: TextStyle(
+                      fontSize: 10,
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                     filled: true,
                     fillColor: Colors.teal[50],
                     hintText: "4242 |",
@@ -116,7 +143,68 @@ class _CreditCardState extends State<CreditCard> {
                   ),
                 ],
               ),
-              expireyDataCode(expiryCon, secCon),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    child: Container(
+                      padding: EdgeInsets.only(left: 10),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.all(Radius.circular(6))),
+                      width: 150,
+                      height: 45,
+                      child: TextField(
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
+                        onTap: () async {
+                          FocusScope.of(context).requestFocus(new FocusNode());
+                          dataTime = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2055),
+                          );
+                          setState(() {
+                            newData = DateFormat('MM-yyyy').format(dataTime!);
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: newData.isEmpty ? "MM/YYYY" : newData,
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: Container(
+                      padding: EdgeInsets.only(left: 10),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(6))),
+                      width: 150,
+                      height: 45,
+                      child: TextField(
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
+                        controller: secCon,
+                        onSubmitted: (_) {},
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 0, 5),
                 child: Text("ZIP/Postal code"),
@@ -157,61 +245,6 @@ class _CreditCardState extends State<CreditCard> {
           ),
         ],
       ),
-    );
-  }
-
-  Row expireyDataCode(
-      TextEditingController expiryCon, TextEditingController secCon) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-          child: Container(
-            padding: EdgeInsets.only(left: 10),
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.all(Radius.circular(6))),
-            width: 150,
-            height: 45,
-            child: TextField(
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 16,
-              ),
-              controller: expiryCon,
-              onSubmitted: (_) {},
-              decoration: InputDecoration(
-                hintText: "MM/YY",
-                border: InputBorder.none,
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          child: Container(
-            padding: EdgeInsets.only(left: 10),
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: const BorderRadius.all(Radius.circular(6))),
-            width: 150,
-            height: 45,
-            child: TextField(
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 16,
-              ),
-              controller: secCon,
-              onSubmitted: (_) {},
-              decoration: InputDecoration(
-                border: InputBorder.none,
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

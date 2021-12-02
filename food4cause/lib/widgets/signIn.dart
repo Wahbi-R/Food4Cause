@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:food4cause/foodPartner.dart';
+import 'package:food4cause/models/users.dart';
+import 'package:food4cause/provider/user_model.dart';
 import 'package:food4cause/widgets/options.dart';
 import 'package:food4cause/widgets/signUp.dart';
+import 'package:provider/provider.dart';
 
 class SignIn extends StatefulWidget {
   final int index;
@@ -64,6 +68,7 @@ class _SignInState extends State<SignIn> {
           Container(
             width: 284,
             child: TextFormField(
+              controller: emailCon,
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
               decoration: const InputDecoration(
                 hintText: 'example@gmail.com',
@@ -83,6 +88,7 @@ class _SignInState extends State<SignIn> {
             height: 60,
             width: 284,
             child: TextFormField(
+              controller: passCon,
               obscureText: tapped ? false : true,
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
               decoration: InputDecoration(
@@ -110,7 +116,15 @@ class _SignInState extends State<SignIn> {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Provider.of<UserModel>(context, listen: false)
+                        .signIn(User(emailCon.text, passCon.text, true));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                FoodPartner(index: widget.index)));
+                  },
                   child: Text("Sign In"),
                   style: ElevatedButton.styleFrom(
                       primary: option[widget.index]['color'], elevation: 2))),
@@ -140,7 +154,7 @@ class _SignInState extends State<SignIn> {
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
                   child: FlatButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>

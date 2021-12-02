@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:food4cause/main.dart';
+import 'package:food4cause/provider/user_model.dart';
+import 'package:food4cause/widgets/make_donation.dart';
+import 'package:food4cause/widgets/settings.dart';
+import 'package:provider/provider.dart';
 
-class drawerWidget extends StatelessWidget {
+class drawerWidget extends StatefulWidget {
   const drawerWidget({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<drawerWidget> createState() => _drawerWidgetState();
+}
+
+class _drawerWidgetState extends State<drawerWidget> {
+  bool donTap = false;
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -31,14 +42,22 @@ class drawerWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "John Doe",
+                    Provider.of<UserModel>(context, listen: false)
+                            .getUserName
+                            .isEmpty
+                        ? "UserName"
+                        : Provider.of<UserModel>(context, listen: false)
+                            .getUserName,
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
                         letterSpacing: 1.5,
                         fontSize: 15),
                   ),
                   Text(
-                    "johndoe@company.com",
+                    Provider.of<UserModel>(
+                      context,
+                      listen: false,
+                    ).getUser.emailAddress,
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Colors.grey[700],
@@ -56,18 +75,34 @@ class drawerWidget extends StatelessWidget {
             ),
             title: Text('Home'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          MyHomePage(title: 'Food4Cause')));
             },
             trailing: Icon(Icons.keyboard_arrow_right),
           ),
           ListTile(
             horizontalTitleGap: 0,
-            leading: Icon(Icons.card_giftcard, color: Colors.grey[400]),
-            title: Text('Donations'),
+            leading: Icon(Icons.card_giftcard,
+                color: donTap ? Colors.amberAccent[700] : Colors.grey[400]),
+            title: Text(
+              'Donations',
+              style: TextStyle(
+                  color: donTap ? Colors.amberAccent[700] : Colors.grey[900]),
+            ),
             onTap: () {
-              Navigator.pop(context);
+              setState(() {
+                donTap = true;
+              });
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MakeDonation()));
             },
-            trailing: Icon(Icons.keyboard_arrow_right),
+            trailing: Icon(
+              donTap ? Icons.keyboard_arrow_left : Icons.keyboard_arrow_right,
+              color: donTap ? Colors.amberAccent[700] : Colors.grey[400],
+            ),
           ),
           ListTile(
             horizontalTitleGap: 0,
@@ -89,6 +124,18 @@ class drawerWidget extends StatelessWidget {
               Navigator.pop(context);
             },
             trailing: Icon(Icons.keyboard_arrow_right),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 120),
+            child: ListTile(
+              horizontalTitleGap: 0,
+              leading: Icon(Icons.settings, color: Colors.grey[400]),
+              title: Text('Settings'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Setting()));
+              },
+            ),
           ),
         ],
       ),
