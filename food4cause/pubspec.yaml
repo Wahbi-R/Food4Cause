@@ -35,6 +35,10 @@ dependencies:
     sdk: flutter
   provider: ^6.0.0
   email_validator: ^2.0.1
+  geolocator: ^7.7.1
+  geocoding:
+  flutter_map:
+  url_launcher:
   
 
 
