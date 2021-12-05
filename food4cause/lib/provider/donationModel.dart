@@ -12,7 +12,12 @@ class DonationModel extends ChangeNotifier {
   }
 
   void removeDonation(int amount) {
-    donations -= amount;
+    if (donations <= 0) {
+      donations = 0;
+    } else {
+      donations -= amount;
+    }
+
     notifyListeners();
   }
 

@@ -1,24 +1,23 @@
 import 'package:flutter/cupertino.dart';
-import 'package:food4cause/models/accounts.dart';
-import 'package:food4cause/models/items.dart';
+import 'package:food4cause/models/parItem.dart';
+import 'package:food4cause/models/partner.dart';
 import 'package:food4cause/models/users.dart';
 import 'package:food4cause/widgets/signIn.dart';
 
-class UserModel extends ChangeNotifier {
+class PartnerModel extends ChangeNotifier {
   User user = User("", "", "", false);
   List<User> listOfUsers = [
     User("brand@gmail.com", "pass", "Brandon Deoram ", false)
   ];
   List<String> emails = ["brand@gmail.com"];
-  List<Account> accounts = [
-    Account(User("brand@gmail.com", "pass", "Brandon Deoram", false),
-        [Item("Chicken", 2.0, "lbs", "", "", "")])
+  List<Partner> accounts = [
+    Partner(User("brand@gmail.com", "pass", "Brandon Deoram", false),
+        [PartItem("Guac", "Lots")], 0)
   ];
   String username = "";
 
   User get getUser => user;
-  List<Account> get getAccounts => accounts;
-  List<Item> get getItems => items;
+  List<Partner> get getAccounts => accounts;
   String get getUserName => username;
 
   void addUserName(String name) {
@@ -38,7 +37,7 @@ class UserModel extends ChangeNotifier {
   void addToUser(User newUser) {
     user = newUser;
     emails.add(newUser.emailAddress);
-    accounts.add(Account(newUser, []));
+    accounts.add(Partner(newUser, [], 0));
     // print(accounts[1].user.emailAddress);
     notifyListeners();
   }
@@ -49,7 +48,7 @@ class UserModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addToItems(Item item) {
+  void addToItems(PartItem item) {
     int index = emails.indexOf(user.emailAddress);
     print("ACCOUNT:${accounts[index].user.emailAddress}");
     print("Current:${user.emailAddress}");
@@ -69,5 +68,12 @@ class UserModel extends ChangeNotifier {
   int get getIndex {
     print("Current User: ${user.emailAddress}");
     return emails.indexOf(user.emailAddress);
+  }
+
+  void addCounter() {
+    int index = getIndex;
+    print("INDEX:${index} USER:${user.emailAddress}");
+    accounts[index].counter = 1;
+    notifyListeners();
   }
 }

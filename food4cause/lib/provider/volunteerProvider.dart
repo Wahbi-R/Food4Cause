@@ -1,24 +1,25 @@
 import 'package:flutter/cupertino.dart';
-import 'package:food4cause/models/accounts.dart';
-import 'package:food4cause/models/items.dart';
+import 'package:food4cause/models/parItem.dart';
+import 'package:food4cause/models/partner.dart';
 import 'package:food4cause/models/users.dart';
+import 'package:food4cause/models/volunteer_account.dart';
+import 'package:food4cause/models/volunteer_model.dart';
 import 'package:food4cause/widgets/signIn.dart';
 
-class UserModel extends ChangeNotifier {
+class VolunteerProvider extends ChangeNotifier {
   User user = User("", "", "", false);
   List<User> listOfUsers = [
     User("brand@gmail.com", "pass", "Brandon Deoram ", false)
   ];
   List<String> emails = ["brand@gmail.com"];
-  List<Account> accounts = [
-    Account(User("brand@gmail.com", "pass", "Brandon Deoram", false),
-        [Item("Chicken", 2.0, "lbs", "", "", "")])
+  List<VolunteerAccount> accounts = [
+    VolunteerAccount(User("brand@gmail.com", "pass", "Brandon Deoram", false),
+        [VolunteerModel("18-10-2021", "10:14", "14:00")])
   ];
   String username = "";
 
   User get getUser => user;
-  List<Account> get getAccounts => accounts;
-  List<Item> get getItems => items;
+  List<VolunteerAccount> get getAccounts => accounts;
   String get getUserName => username;
 
   void addUserName(String name) {
@@ -38,8 +39,7 @@ class UserModel extends ChangeNotifier {
   void addToUser(User newUser) {
     user = newUser;
     emails.add(newUser.emailAddress);
-    accounts.add(Account(newUser, []));
-    // print(accounts[1].user.emailAddress);
+    accounts.add(VolunteerAccount(newUser, []));
     notifyListeners();
   }
 
@@ -49,12 +49,10 @@ class UserModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addToItems(Item item) {
+  void addToItems(VolunteerModel item) {
     int index = emails.indexOf(user.emailAddress);
-    print("ACCOUNT:${accounts[index].user.emailAddress}");
-    print("Current:${user.emailAddress}");
     if (accounts[index].user.emailAddress == user.emailAddress) {
-      accounts[index].items.add(item);
+      accounts[index].dates.add(item);
     } else {
       print("SOMETHING WRONG");
     }
@@ -63,7 +61,7 @@ class UserModel extends ChangeNotifier {
 
   void printItems() {
     int index = listOfUsers.indexOf(user);
-    print(accounts[index].items);
+    print(accounts[index].dates);
   }
 
   int get getIndex {

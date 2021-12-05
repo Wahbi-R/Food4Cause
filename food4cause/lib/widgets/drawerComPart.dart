@@ -1,27 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:food4cause/main.dart';
+import 'package:food4cause/models/partner.dart';
 import 'package:food4cause/models/users.dart';
+import 'package:food4cause/provider/communitie_model.dart';
+import 'package:food4cause/provider/partner_model.dart';
 import 'package:food4cause/provider/user_model.dart';
 import 'package:food4cause/widgets/community_page.dart';
+import 'package:food4cause/widgets/drawerFoodPartner.dart';
 import 'package:food4cause/widgets/make_donation.dart';
+import 'package:food4cause/widgets/make_request.dart';
 import 'package:food4cause/widgets/map.dart';
 import 'package:food4cause/widgets/settings.dart';
+import 'package:food4cause/widgets/settings_partner.dart';
 import 'package:provider/provider.dart';
 
-class drawerWidget extends StatefulWidget {
-  const drawerWidget({
+class drawerComPart extends StatefulWidget {
+  drawerComPart({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<drawerWidget> createState() => _drawerWidgetState();
+  State<drawerComPart> createState() => _drawerWidgetState();
 }
 
-class _drawerWidgetState extends State<drawerWidget> {
+class _drawerWidgetState extends State<drawerComPart> {
   bool donTap = false;
   @override
   Widget build(BuildContext context) {
-    int index = Provider.of<UserModel>(context, listen: false).getIndex;
+    int index = Provider.of<PartnerModel>(context, listen: false).getIndex;
     return Drawer(
       elevation: 0,
       child: ListView(
@@ -45,7 +51,7 @@ class _drawerWidgetState extends State<drawerWidget> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Consumer<UserModel>(
+                  Consumer<PartnerModel>(
                     builder: (context, user, _) {
                       return Text(
                         user.accounts[index].user.username.isEmpty
@@ -59,10 +65,10 @@ class _drawerWidgetState extends State<drawerWidget> {
                     },
                   ),
                   Text(
-                    Provider.of<UserModel>(
+                    Provider.of<PartnerModel>(
                       context,
                       listen: false,
-                    ).getUser.emailAddress,
+                    ).accounts[index].user.emailAddress,
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Colors.grey[700],
@@ -93,16 +99,13 @@ class _drawerWidgetState extends State<drawerWidget> {
             leading: Icon(Icons.card_giftcard,
                 color: donTap ? Colors.amberAccent[700] : Colors.grey[400]),
             title: Text(
-              'Donations',
+              'Request',
               style: TextStyle(
                   color: donTap ? Colors.amberAccent[700] : Colors.grey[900]),
             ),
             onTap: () {
-              setState(() {
-                donTap = true;
-              });
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MakeDonation()));
+                  MaterialPageRoute(builder: (context) => MakeRequest()));
             },
             trailing: Icon(
               donTap ? Icons.keyboard_arrow_left : Icons.keyboard_arrow_right,
@@ -125,10 +128,10 @@ class _drawerWidgetState extends State<drawerWidget> {
           ListTile(
             horizontalTitleGap: 0,
             leading: Icon(Icons.favorite, color: Colors.grey[400]),
-            title: Text('Communities'),
+            title: Text('Food Partners'),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CommunityPage()));
+                  MaterialPageRoute(builder: (context) => drawerFoodPartner()));
             },
             trailing: Icon(Icons.keyboard_arrow_right),
           ),
@@ -140,7 +143,7 @@ class _drawerWidgetState extends State<drawerWidget> {
               title: Text('Settings'),
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Setting()));
+                    MaterialPageRoute(builder: (context) => SettingParter()));
               },
             ),
           ),

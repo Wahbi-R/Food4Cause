@@ -1,8 +1,11 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:food4cause/communitypartner.dart';
 import 'package:food4cause/foodPartner.dart';
 import 'package:food4cause/models/users.dart';
+import 'package:food4cause/provider/partner_model.dart';
 import 'package:food4cause/provider/user_model.dart';
+import 'package:food4cause/volunteer.dart';
 import 'package:food4cause/widgets/options.dart';
 import 'package:food4cause/widgets/signIn.dart';
 import 'package:provider/provider.dart';
@@ -163,16 +166,40 @@ class _SignUpState extends State<SignUp> {
                       onPressed: () {
                         //If tapped is == to true
                         if (tapped == true) {
-                          Provider.of<UserModel>(context, listen: false)
-                              .addToUser(
-                                  User(emailCon.text, passCon.text, true));
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      FoodPartner(
-                                        index: widget.index,
-                                      )));
+                          switch (widget.index) {
+                            case 1:
+                              Provider.of<UserModel>(context, listen: false)
+                                  .addToUser(User(
+                                      emailCon.text, passCon.text, "", true));
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          FoodPartner(index: widget.index)));
+                              break;
+                            case 2:
+                              Provider.of<PartnerModel>(context, listen: false)
+                                  .addToUser(User(
+                                      emailCon.text, passCon.text, "", true));
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CommunityPartner(
+                                          index: widget.index)));
+                              break;
+                            case 3:
+                              Provider.of<PartnerModel>(context, listen: false)
+                                  .addToUser(User(
+                                      emailCon.text, passCon.text, "", true));
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          Volunteer(index: widget.index)));
+                              break;
+
+                            default:
+                          }
                         } else {
                           showDialog(
                               context: context,

@@ -1,7 +1,15 @@
+import 'package:email_validator/email_validator.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:food4cause/communitypartner.dart';
 import 'package:food4cause/foodPartner.dart';
 import 'package:food4cause/models/users.dart';
+import 'package:food4cause/provider/communitie_model.dart';
+import 'package:food4cause/provider/partner_model.dart';
 import 'package:food4cause/provider/user_model.dart';
+import 'package:food4cause/provider/volunteerProvider.dart';
+import 'package:food4cause/volunteer.dart';
 import 'package:food4cause/widgets/options.dart';
 import 'package:food4cause/widgets/signUp.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +27,13 @@ class _SignInState extends State<SignIn> {
   //Controllers
   TextEditingController emailCon = TextEditingController();
   TextEditingController passCon = TextEditingController();
+  bool isEmail(String em) {
+    return RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+        .hasMatch(em);
+  }
+
+  bool isValid = true;
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -69,8 +84,15 @@ class _SignInState extends State<SignIn> {
             width: 284,
             child: TextFormField(
               controller: emailCon,
+              onEditingComplete: () {
+                setState(() {
+                  isValid = EmailValidator.validate(emailCon.text);
+                  FocusScope.of(context).unfocus();
+                });
+              },
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                errorText: isValid ? null : "Enter Valid Email Address",
                 hintText: 'example@gmail.com',
               ),
             ),
@@ -117,13 +139,39 @@ class _SignInState extends State<SignIn> {
               ),
               child: ElevatedButton(
                   onPressed: () {
-                    Provider.of<UserModel>(context, listen: false)
-                        .signIn(User(emailCon.text, passCon.text, true));
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                FoodPartner(index: widget.index)));
+                    switch (widget.index) {
+                      case 1:
+                        Provider.of<UserModel>(context, listen: false).signIn(
+                            User(emailCon.text, passCon.text, "", true));
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    FoodPartner(index: widget.index)));
+                        break;
+                      case 2:
+                        Provider.of<PartnerModel>(context, listen: false)
+                            .signIn(
+                                User(emailCon.text, passCon.text, "", true));
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    CommunityPartner(index: widget.index)));
+                        break;
+                      case 3:
+                        Provider.of<VolunteerProvider>(context, listen: false)
+                            .signIn(
+                                User(emailCon.text, passCon.text, "", true));
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    Volunteer(index: widget.index)));
+                        break;
+
+                      default:
+                    }
                   },
                   child: Text("Sign In"),
                   style: ElevatedButton.styleFrom(
@@ -144,7 +192,7 @@ class _SignInState extends State<SignIn> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
-                  child: Text("Forget Passoword ?",
+                  child: Text("Forget Password ?",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: Colors.grey[700],

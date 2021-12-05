@@ -1,27 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:food4cause/main.dart';
+import 'package:food4cause/models/partner.dart';
 import 'package:food4cause/models/users.dart';
+import 'package:food4cause/provider/communitie_model.dart';
+import 'package:food4cause/provider/partner_model.dart';
 import 'package:food4cause/provider/user_model.dart';
+import 'package:food4cause/provider/volunteerProvider.dart';
 import 'package:food4cause/widgets/community_page.dart';
+import 'package:food4cause/widgets/drawerFoodPartner.dart';
 import 'package:food4cause/widgets/make_donation.dart';
+import 'package:food4cause/widgets/make_request.dart';
 import 'package:food4cause/widgets/map.dart';
+import 'package:food4cause/widgets/schedule.dart';
+import 'package:food4cause/widgets/scheduletab.dart';
 import 'package:food4cause/widgets/settings.dart';
+import 'package:food4cause/widgets/settings_partner.dart';
+import 'package:food4cause/widgets/settings_volunteer.dart';
+import 'package:food4cause/widgets/volunteer_request.dart';
+import 'package:food4cause/widgets/volunteer_tab.dart';
 import 'package:provider/provider.dart';
 
-class drawerWidget extends StatefulWidget {
-  const drawerWidget({
+class drawerVolunteer extends StatefulWidget {
+  drawerVolunteer({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<drawerWidget> createState() => _drawerWidgetState();
+  State<drawerVolunteer> createState() => _drawerWidgetState();
 }
 
-class _drawerWidgetState extends State<drawerWidget> {
+class _drawerWidgetState extends State<drawerVolunteer> {
   bool donTap = false;
   @override
   Widget build(BuildContext context) {
-    int index = Provider.of<UserModel>(context, listen: false).getIndex;
+    int index = Provider.of<VolunteerProvider>(context, listen: false).getIndex;
     return Drawer(
       elevation: 0,
       child: ListView(
@@ -45,7 +57,7 @@ class _drawerWidgetState extends State<drawerWidget> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Consumer<UserModel>(
+                  Consumer<PartnerModel>(
                     builder: (context, user, _) {
                       return Text(
                         user.accounts[index].user.username.isEmpty
@@ -59,10 +71,10 @@ class _drawerWidgetState extends State<drawerWidget> {
                     },
                   ),
                   Text(
-                    Provider.of<UserModel>(
+                    Provider.of<VolunteerProvider>(
                       context,
                       listen: false,
-                    ).getUser.emailAddress,
+                    ).accounts[index].user.emailAddress,
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Colors.grey[700],
@@ -93,16 +105,13 @@ class _drawerWidgetState extends State<drawerWidget> {
             leading: Icon(Icons.card_giftcard,
                 color: donTap ? Colors.amberAccent[700] : Colors.grey[400]),
             title: Text(
-              'Donations',
+              'Volunteer',
               style: TextStyle(
                   color: donTap ? Colors.amberAccent[700] : Colors.grey[900]),
             ),
             onTap: () {
-              setState(() {
-                donTap = true;
-              });
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MakeDonation()));
+                  MaterialPageRoute(builder: (context) => VolunteerTab()));
             },
             trailing: Icon(
               donTap ? Icons.keyboard_arrow_left : Icons.keyboard_arrow_right,
@@ -111,36 +120,27 @@ class _drawerWidgetState extends State<drawerWidget> {
           ),
           ListTile(
             horizontalTitleGap: 0,
-            leading:
-                Icon(Icons.person_pin_circle_sharp, color: Colors.grey[400]),
+            leading: Icon(Icons.calendar_today, color: Colors.grey[400]),
             title: Text(
-              'Map',
+              'Schedule',
             ),
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Map1()));
-            },
-            trailing: Icon(Icons.keyboard_arrow_right),
-          ),
-          ListTile(
-            horizontalTitleGap: 0,
-            leading: Icon(Icons.favorite, color: Colors.grey[400]),
-            title: Text('Communities'),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CommunityPage()));
+                  context, MaterialPageRoute(builder: (context) => Schedule()));
             },
             trailing: Icon(Icons.keyboard_arrow_right),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 120),
+            padding: EdgeInsets.only(top: 180),
             child: ListTile(
               horizontalTitleGap: 0,
               leading: Icon(Icons.settings, color: Colors.grey[400]),
               title: Text('Settings'),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Setting()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SettingVolunteer()));
               },
             ),
           ),

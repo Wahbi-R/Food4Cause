@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food4cause/provider/donationModel.dart';
+import 'package:food4cause/provider/user_model.dart';
 import 'package:food4cause/widgets/barChartSample.dart';
 import 'package:provider/provider.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+
 import 'package:intl/intl.dart';
 
 class CreditCard extends StatefulWidget {
@@ -35,6 +36,53 @@ class _CreditCardState extends State<CreditCard> {
         setState(() {
           hasNumName = false;
         });
+      }
+    }
+
+    void checkEmpty() {
+      bool isEmpty = false;
+
+      List<TextEditingController> controllers = [
+        nameController,
+        cardNumCon,
+        secCon,
+        zipCon
+      ];
+      for (int i = 0; i < controllers.length; i++) {
+        if (controllers[i].text.isEmpty) {
+          isEmpty = true;
+        }
+      }
+      if (isEmpty) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Fill In all Fields"),
+                content: Text("Thank you"),
+              );
+            });
+      } else if (Provider.of<DonationModel>(context, listen: false).donations ==
+          0) {
+        final scaffold = ScaffoldMessenger.of(context);
+        scaffold.showSnackBar(SnackBar(
+          content: Text(
+            " Cant Donate 0",
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.teal[300],
+        ));
+      } else {
+        final scaffold = ScaffoldMessenger.of(context);
+        scaffold.showSnackBar(SnackBar(
+          content: Text(
+            "Payment Succesful",
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.teal[300],
+        ));
+
+        Provider.of<DonationModel>(context, listen: false).setDonation();
       }
     }
 
@@ -231,16 +279,12 @@ class _CreditCardState extends State<CreditCard> {
                   ),
                 ),
               ),
-              TotalDonWidget(),
+              TotalDonWidget(checkEmpty),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                 child: Container(
                     height: 200, width: 350, child: const BarChartSample1()),
               ),
-              // Container(
-              //     height: 200,
-              //     width: 400,
-              //     child: BarChartWidget(Types.generateData())),
             ],
           ),
         ],
@@ -250,13 +294,15 @@ class _CreditCardState extends State<CreditCard> {
 }
 
 class TotalDonWidget extends StatelessWidget {
-  const TotalDonWidget({Key? key}) : super(key: key);
+  final void Function() checkEmpty;
+  TotalDonWidget(this.checkEmpty, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
       child: FlatButton(
-          onPressed: () {},
+          onPressed: this.checkEmpty,
           child: Container(
             decoration: BoxDecoration(
                 color: Colors.teal[200],

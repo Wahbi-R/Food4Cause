@@ -26,6 +26,7 @@ class _DonateState extends State<Donate> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
+          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
           child: Center(
             child: Padding(
               padding: EdgeInsets.fromLTRB(10, 0, 0, 0),

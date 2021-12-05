@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food4cause/models/communities.dart';
 import 'package:food4cause/models/items.dart';
+import 'package:food4cause/provider/communitie_model.dart';
 import 'package:food4cause/provider/user_model.dart';
 import 'package:provider/provider.dart';
 
@@ -19,9 +21,18 @@ class _DonationCardState extends State<DonationCard> {
   TextEditingController expiryCon = new TextEditingController();
   TextEditingController storageCon = new TextEditingController();
   TextEditingController otherCon = new TextEditingController();
+  CommunityModel communityModel = new CommunityModel();
   //Validation for text
   bool itemBool = false;
   bool weightBool = false;
+  List<Communities> listComm = [];
+  Communities dropDownValue1 = Communities("Start", "Ebd");
+  initState() {
+    super.initState();
+    listComm = Provider.of<CommunityModel>(context, listen: false).commList;
+    dropDownValue1 = listComm[0];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -40,6 +51,37 @@ class _DonationCardState extends State<DonationCard> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Row(
+                  children: [
+                    Text("Community:"),
+                    Container(
+                      height: 43,
+                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: DropdownButton<Communities>(
+                        elevation: 16,
+                        style: TextStyle(color: Colors.black),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.orange[800],
+                        ),
+                        onChanged: (Communities? newValue) {
+                          setState(() {
+                            dropDownValue1 = newValue!;
+                            print(dropDownValue1.name);
+                          });
+                        },
+                        value: dropDownValue1,
+                        items: listComm.map<DropdownMenuItem<Communities>>(
+                            (Communities value) {
+                          return DropdownMenuItem<Communities>(
+                            value: value,
+                            child: Text(value.name),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
                 Row(
                   children: [
                     Text("Item:"),
@@ -86,7 +128,7 @@ class _DonationCardState extends State<DonationCard> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 0),
                   child: Row(
                     children: [
                       Text("Choose:"),
@@ -153,12 +195,12 @@ class _DonationCardState extends State<DonationCard> {
                             )))
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 Center(
                   child: Container(
                       padding: EdgeInsets.only(right: 10),
                       width: 350,
-                      height: 45,
+                      height: 35,
                       child: ElevatedButton(
                           onPressed: () {
                             double weight1 = double.parse(weightCon.text);

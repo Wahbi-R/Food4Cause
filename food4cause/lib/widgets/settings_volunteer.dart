@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:food4cause/foodPartner.dart';
 import 'package:food4cause/main.dart';
+import 'package:food4cause/models/volunteer_model.dart';
+import 'package:food4cause/provider/partner_model.dart';
 import 'package:food4cause/provider/user_model.dart';
+import 'package:food4cause/provider/volunteerProvider.dart';
 import 'package:provider/provider.dart';
 
-class Setting extends StatefulWidget {
-  Setting({Key? key}) : super(key: key);
+class SettingVolunteer extends StatefulWidget {
+  SettingVolunteer({Key? key}) : super(key: key);
 
   @override
-  State<Setting> createState() => _SettingState();
+  State<SettingVolunteer> createState() => _SettingState();
 }
 
-class _SettingState extends State<Setting> {
+class _SettingState extends State<SettingVolunteer> {
   final userCon = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    int index = Provider.of<UserModel>(context, listen: false).getIndex;
+    int index = Provider.of<VolunteerProvider>(context, listen: false).getIndex;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -45,19 +48,21 @@ class _SettingState extends State<Setting> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                            Provider.of<UserModel>(context, listen: false)
+                            Provider.of<VolunteerProvider>(context,
+                                        listen: false)
                                     .accounts[index]
                                     .user
                                     .username
                                     .isEmpty
                                 ? "UserName"
-                                : Provider.of<UserModel>(context, listen: false)
+                                : Provider.of<VolunteerProvider>(context,
+                                        listen: false)
                                     .accounts[index]
                                     .user
                                     .username,
                             style: TextStyle(fontSize: 20)),
                         Text(
-                          Provider.of<UserModel>(context, listen: false)
+                          Provider.of<VolunteerProvider>(context, listen: false)
                               .user
                               .emailAddress,
                           style: TextStyle(
@@ -92,7 +97,7 @@ class _SettingState extends State<Setting> {
                   controller: userCon,
                   onSubmitted: (val) {
                     setState(() {
-                      Provider.of<UserModel>(context, listen: false)
+                      Provider.of<VolunteerProvider>(context, listen: false)
                           .addUserName(userCon.text);
                     });
                     userCon.clear();
@@ -181,7 +186,8 @@ class _SettingState extends State<Setting> {
                             backgroundColor: Colors.black),
                         onPressed: () {
                           setState(() {
-                            Provider.of<UserModel>(context, listen: false)
+                            Provider.of<VolunteerProvider>(context,
+                                    listen: false)
                                 .signOut();
                           });
                           Navigator.pushReplacement(
