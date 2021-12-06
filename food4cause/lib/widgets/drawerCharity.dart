@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:food4cause/main.dart';
 import 'package:food4cause/models/users.dart';
+import 'package:food4cause/provider/charityProvider.dart';
 import 'package:food4cause/provider/user_model.dart';
+import 'package:food4cause/widgets/cheque_tab.dart';
 import 'package:food4cause/widgets/community_page.dart';
+import 'package:food4cause/widgets/make_charity.dart';
 import 'package:food4cause/widgets/make_donation.dart';
 import 'package:food4cause/widgets/map.dart';
-import 'package:food4cause/widgets/map2.dart';
+import 'package:food4cause/widgets/projects_tab.dart';
 import 'package:food4cause/widgets/settings.dart';
+import 'package:food4cause/widgets/settings_chartiy.dart';
 import 'package:provider/provider.dart';
 
-class drawerWidget extends StatefulWidget {
-  const drawerWidget({
+class drawerCharty extends StatefulWidget {
+  const drawerCharty({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<drawerWidget> createState() => _drawerWidgetState();
+  State<drawerCharty> createState() => _drawerWidgetState();
 }
 
-class _drawerWidgetState extends State<drawerWidget> {
+class _drawerWidgetState extends State<drawerCharty> {
   bool donTap = false;
   @override
   Widget build(BuildContext context) {
-    int index = Provider.of<UserModel>(context, listen: false).getIndex;
+    int index = Provider.of<CharityProvider>(context, listen: false).getIndex;
     return Drawer(
       elevation: 0,
       child: ListView(
@@ -40,13 +44,13 @@ class _drawerWidgetState extends State<drawerWidget> {
                 )),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: Container(
               height: 170,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Consumer<UserModel>(
+                  Consumer<CharityProvider>(
                     builder: (context, user, _) {
                       return Text(
                         user.accounts[index].user.username.isEmpty
@@ -60,7 +64,7 @@ class _drawerWidgetState extends State<drawerWidget> {
                     },
                   ),
                   Text(
-                    Provider.of<UserModel>(
+                    Provider.of<CharityProvider>(
                       context,
                       listen: false,
                     ).getUser.emailAddress,
@@ -92,22 +96,22 @@ class _drawerWidgetState extends State<drawerWidget> {
           ListTile(
             horizontalTitleGap: 0,
             leading: Icon(Icons.card_giftcard,
-                color: donTap ? Colors.amberAccent[700] : Colors.grey[400]),
+                color: donTap ? Colors.blue[300] : Colors.grey[400]),
             title: Text(
               'Donations',
               style: TextStyle(
-                  color: donTap ? Colors.amberAccent[700] : Colors.grey[900]),
+                  color: donTap ? Colors.blue[300] : Colors.grey[900]),
             ),
             onTap: () {
               setState(() {
-                donTap = true;
+                donTap = !donTap;
               });
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MakeDonation()));
+                  MaterialPageRoute(builder: (context) => MakeCharity()));
             },
             trailing: Icon(
               donTap ? Icons.keyboard_arrow_left : Icons.keyboard_arrow_right,
-              color: donTap ? Colors.amberAccent[700] : Colors.grey[400],
+              color: donTap ? Colors.blue[300] : Colors.grey[400],
             ),
           ),
           ListTile(
@@ -119,7 +123,7 @@ class _drawerWidgetState extends State<drawerWidget> {
             ),
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Map2()));
+                  context, MaterialPageRoute(builder: (context) => Map1()));
             },
             trailing: Icon(Icons.keyboard_arrow_right),
           ),
@@ -133,15 +137,36 @@ class _drawerWidgetState extends State<drawerWidget> {
             },
             trailing: Icon(Icons.keyboard_arrow_right),
           ),
+          ListTile(
+            horizontalTitleGap: 0,
+            leading: Icon(Icons.hdr_weak_rounded, color: Colors.grey[400]),
+            title: Text('Projects'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProjectsTab()));
+            },
+            trailing: Icon(Icons.keyboard_arrow_right),
+          ),
+          ListTile(
+            horizontalTitleGap: 0,
+            leading:
+                Icon(Icons.monetization_on_outlined, color: Colors.grey[400]),
+            title: Text('Cheque'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ChequeTab()));
+            },
+            trailing: Icon(Icons.keyboard_arrow_right),
+          ),
           Padding(
-            padding: EdgeInsets.only(top: 120),
+            padding: EdgeInsets.only(top: 20),
             child: ListTile(
               horizontalTitleGap: 0,
               leading: Icon(Icons.settings, color: Colors.grey[400]),
               title: Text('Settings'),
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Setting()));
+                    MaterialPageRoute(builder: (context) => SettingCharity()));
               },
             ),
           ),

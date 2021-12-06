@@ -2,9 +2,11 @@ import 'package:email_validator/email_validator.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:food4cause/charityPartner.dart';
 import 'package:food4cause/communitypartner.dart';
 import 'package:food4cause/foodPartner.dart';
 import 'package:food4cause/models/users.dart';
+import 'package:food4cause/provider/charityProvider.dart';
 import 'package:food4cause/provider/communitie_model.dart';
 import 'package:food4cause/provider/partner_model.dart';
 import 'package:food4cause/provider/user_model.dart';
@@ -42,10 +44,7 @@ class _SignInState extends State<SignIn> {
         children: [
           Container(
             padding: EdgeInsets.only(top: 50),
-            child: Icon(
-              Icons.local_restaurant,
-              size: 80,
-            ),
+            child: option[widget.index]['icon'],
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10),
@@ -139,38 +138,58 @@ class _SignInState extends State<SignIn> {
               ),
               child: ElevatedButton(
                   onPressed: () {
-                    switch (widget.index) {
-                      case 1:
-                        Provider.of<UserModel>(context, listen: false).signIn(
-                            User(emailCon.text, passCon.text, "", true));
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    FoodPartner(index: widget.index)));
-                        break;
-                      case 2:
-                        Provider.of<PartnerModel>(context, listen: false)
-                            .signIn(
-                                User(emailCon.text, passCon.text, "", true));
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    CommunityPartner(index: widget.index)));
-                        break;
-                      case 3:
-                        Provider.of<VolunteerProvider>(context, listen: false)
-                            .signIn(
-                                User(emailCon.text, passCon.text, "", true));
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Volunteer(index: widget.index)));
-                        break;
+                    if (emailCon.text.isEmpty || !isEmail(emailCon.text)) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Fill in Fields/Invalid Input"),
+                            );
+                          });
+                    } else {
+                      switch (widget.index) {
+                        case 1:
+                          Provider.of<UserModel>(context, listen: false).signIn(
+                              User(emailCon.text, passCon.text, "", true));
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      FoodPartner(index: widget.index)));
+                          break;
+                        case 2:
+                          Provider.of<PartnerModel>(context, listen: false)
+                              .signIn(
+                                  User(emailCon.text, passCon.text, "", true));
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CommunityPartner(index: widget.index)));
+                          break;
+                        case 3:
+                          Provider.of<VolunteerProvider>(context, listen: false)
+                              .signIn(
+                                  User(emailCon.text, passCon.text, "", true));
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      Volunteer(index: widget.index)));
+                          break;
+                        case 4:
+                          Provider.of<CharityProvider>(context, listen: false)
+                              .signIn(
+                                  User(emailCon.text, passCon.text, "", true));
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CharityPartner(index: widget.index)));
+                          break;
 
-                      default:
+                        default:
+                      }
                     }
                   },
                   child: Text("Sign In"),

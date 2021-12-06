@@ -1,22 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:food4cause/main.dart';
-import 'package:food4cause/models/partner.dart';
-import 'package:food4cause/models/users.dart';
-import 'package:food4cause/provider/communitie_model.dart';
-import 'package:food4cause/provider/partner_model.dart';
-import 'package:food4cause/provider/user_model.dart';
+
 import 'package:food4cause/provider/volunteerProvider.dart';
-import 'package:food4cause/widgets/community_page.dart';
-import 'package:food4cause/widgets/drawerFoodPartner.dart';
-import 'package:food4cause/widgets/make_donation.dart';
-import 'package:food4cause/widgets/make_request.dart';
-import 'package:food4cause/widgets/map.dart';
+
 import 'package:food4cause/widgets/schedule.dart';
-import 'package:food4cause/widgets/scheduletab.dart';
-import 'package:food4cause/widgets/settings.dart';
-import 'package:food4cause/widgets/settings_partner.dart';
+
 import 'package:food4cause/widgets/settings_volunteer.dart';
-import 'package:food4cause/widgets/volunteer_request.dart';
+
 import 'package:food4cause/widgets/volunteer_tab.dart';
 import 'package:provider/provider.dart';
 
@@ -57,7 +47,7 @@ class _drawerWidgetState extends State<drawerVolunteer> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Consumer<PartnerModel>(
+                  Consumer<VolunteerProvider>(
                     builder: (context, user, _) {
                       return Text(
                         user.accounts[index].user.username.isEmpty

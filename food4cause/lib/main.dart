@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food4cause/provider/charityProvider.dart';
 import 'package:food4cause/provider/communitie_model.dart';
 import 'package:food4cause/provider/donationModel.dart';
 import 'package:food4cause/provider/partner_model.dart';
@@ -27,6 +28,7 @@ void main() {
       ChangeNotifierProvider<PartnerModel>(create: (_) => PartnerModel()),
       ChangeNotifierProvider<VolunteerProvider>(
           create: (_) => VolunteerProvider()),
+      ChangeNotifierProvider<CharityProvider>(create: (_) => CharityProvider()),
     ],
     child: MyApp(),
   ));

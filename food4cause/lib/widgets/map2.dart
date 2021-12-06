@@ -8,8 +8,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Map1 extends StatelessWidget {
-  Map1({Key? key}) : super(key: key);
+class Map2 extends StatelessWidget {
+  Map2({Key? key}) : super(key: key);
   final List<Location> locations = [
     Location(
         name: "Christian Life Centre",
@@ -83,9 +83,9 @@ class Map1 extends StatelessWidget {
   Widget build(BuildContext context) {
     MapController _mapController = MapController();
     Widget myMap = map(context, _mapController, positionCoords, markerList);
-    for (int i = 0; i < locations.length; i++) {
+    for (int i = 0; i < locations2.length; i++) {
       markerList
-          .add(makeMarker(locations[i].latlng, locations[i], _mapController));
+          .add(makeMarker(locations2[i].latlng, locations2[i], _mapController));
     }
     return Scaffold(
       appBar: AppBar(

@@ -112,7 +112,8 @@ class RequestCardState extends State<RequestCard> {
                                     0) {
                                   Provider.of<PartnerModel>(context,
                                           listen: false)
-                                      .addToItems(PartItem("Pork", "Pulled"));
+                                      .addToItems(
+                                          PartItem("Request", "Anything"));
                                   Provider.of<PartnerModel>(context,
                                           listen: false)
                                       .addCounter();

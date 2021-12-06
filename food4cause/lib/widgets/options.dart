@@ -26,7 +26,6 @@ List<Map> option = [
       Icons.food_bank_outlined,
       size: 50,
     ),
-    "model": UserModel,
   },
   {
     "name": "Community Partner",
@@ -45,7 +44,6 @@ List<Map> option = [
       Icons.emoji_people,
       size: 50,
     ),
-    "model": CommunityModel,
   },
   {
     "name": "Charity Partner",
@@ -55,7 +53,6 @@ List<Map> option = [
       Icons.nature_people_rounded,
       size: 50,
     ),
-    "model": UserModel,
   },
   {
     "name": "About Us",
@@ -65,7 +62,6 @@ List<Map> option = [
       Icons.accessibility_new_outlined,
       size: 50,
     ),
-    "model": UserModel,
   },
 ];
 List<Map> option2 = [
@@ -86,7 +82,6 @@ List<Map> option2 = [
       Icons.food_bank_outlined,
       size: 50,
     ),
-    "model": UserModel,
   },
   {
     "name": "Community Partner",
@@ -105,7 +100,6 @@ List<Map> option2 = [
       Icons.emoji_people,
       size: 50,
     ),
-    "model": CommunityModel,
   },
   {
     "name": "Charity Partner",
@@ -115,7 +109,6 @@ List<Map> option2 = [
       Icons.nature_people_rounded,
       size: 50,
     ),
-    "model": UserModel,
   },
   {
     "name": "About Us",
@@ -125,6 +118,5 @@ List<Map> option2 = [
       Icons.accessibility_new_outlined,
       size: 50,
     ),
-    "model": UserModel,
   },
 ];

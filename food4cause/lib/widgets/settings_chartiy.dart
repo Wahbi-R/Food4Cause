@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:food4cause/charityPartner.dart';
 import 'package:food4cause/foodPartner.dart';
 import 'package:food4cause/main.dart';
-import 'package:food4cause/models/volunteer_model.dart';
+import 'package:food4cause/provider/charityProvider.dart';
 import 'package:food4cause/provider/partner_model.dart';
 import 'package:food4cause/provider/user_model.dart';
-import 'package:food4cause/provider/volunteerProvider.dart';
 import 'package:provider/provider.dart';
 
-class SettingVolunteer extends StatefulWidget {
-  SettingVolunteer({Key? key}) : super(key: key);
+class SettingCharity extends StatefulWidget {
+  SettingCharity({Key? key}) : super(key: key);
 
   @override
-  State<SettingVolunteer> createState() => _SettingState();
+  State<SettingCharity> createState() => _SettingState();
 }
 
-class _SettingState extends State<SettingVolunteer> {
+class _SettingState extends State<SettingCharity> {
   final userCon = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    int index = Provider.of<VolunteerProvider>(context, listen: false).getIndex;
+    int index = Provider.of<CharityProvider>(context, listen: false).getIndex;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -47,21 +48,20 @@ class _SettingState extends State<SettingVolunteer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                            Provider.of<VolunteerProvider>(context,
-                                        listen: false)
+                            Provider.of<CharityProvider>(context, listen: false)
                                     .accounts[index]
                                     .user
                                     .username
                                     .isEmpty
                                 ? "UserName"
-                                : Provider.of<VolunteerProvider>(context,
+                                : Provider.of<CharityProvider>(context,
                                         listen: false)
                                     .accounts[index]
                                     .user
                                     .username,
                             style: TextStyle(fontSize: 20)),
                         Text(
-                          Provider.of<VolunteerProvider>(context, listen: false)
+                          Provider.of<CharityProvider>(context, listen: false)
                               .user
                               .emailAddress,
                           style: TextStyle(
@@ -96,7 +96,7 @@ class _SettingState extends State<SettingVolunteer> {
                   controller: userCon,
                   onSubmitted: (val) {
                     setState(() {
-                      Provider.of<VolunteerProvider>(context, listen: false)
+                      Provider.of<CharityProvider>(context, listen: false)
                           .addUserName(userCon.text);
                     });
                     userCon.clear();
@@ -185,8 +185,7 @@ class _SettingState extends State<SettingVolunteer> {
                             backgroundColor: Colors.black),
                         onPressed: () {
                           setState(() {
-                            Provider.of<VolunteerProvider>(context,
-                                    listen: false)
+                            Provider.of<CharityProvider>(context, listen: false)
                                 .signOut();
                           });
                           Navigator.pushReplacement(

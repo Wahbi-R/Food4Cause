@@ -133,8 +133,7 @@ class CommunityPage extends StatelessWidget {
                           },
                           child: Text("Submit"),
                           style: ElevatedButton.styleFrom(
-                              primary: Colors.orangeAccent[700],
-                              elevation: 0))),
+                              primary: Colors.grey, elevation: 0))),
                 ),
               ),
             ],
@@ -160,7 +159,7 @@ class CommunityPage extends StatelessWidget {
                       title: Padding(
                         padding: const EdgeInsets.only(left: 0),
                         child: Text(
-                          comm.commList[index].name,
+                          comm.commList2[index].name,
                           style: TextStyle(fontSize: 13),
                         ),
                       ),
